@@ -1,3 +1,4 @@
+import api from "@/lib/axios";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -95,8 +96,7 @@ export default function PostCatForm() {
 }
 
 async function postCar(data: CatType) {
-  const response = await axios.post("https://localhost:3002/api/kot", data, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const response = await api.post("/kot", data);
+
   return response.data;
 }

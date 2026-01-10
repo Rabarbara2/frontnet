@@ -38,17 +38,15 @@ export default function AdopterstList() {
         {loading ? (
           <div>ładowańsko</div>
         ) : adopters.length === 0 ? (
-          <div>Brak kotków</div>
+          <div>Brak osób adoptujących</div>
         ) : (
-          adopters.map((cat) => (
-            <AdopterListItem adopter={cat} key={cat.id}/>
-          ))
+          adopters.map((cat) => <AdopterListItem adopter={cat} key={cat.id} />)
         )}
         <div
           className="cursor-pointer bg-purple-300 hover:bg-purple-400 rounded-2xl p-2 flex flex-col items-center justify-center text-xl "
           onClick={() => setShowForm(!showForm)}
         >
-          Dodaj Osobe +
+          Dodaj Osobę +
         </div>
       </div>
       {showForm && <PostAdopterForm />}

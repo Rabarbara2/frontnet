@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import PostCatForm from "./postCarForm";
 import CatListItem from "./catListItem";
 import api from "@/lib/axios";
+import { BlockList } from "net";
 type CatsType = {
   id: number;
   name: string;
@@ -15,7 +16,11 @@ type CatsType = {
   dateOfArival: string;
   isAdopted: boolean;
 };
-export default function CatList() {
+
+type propType = {
+  showAdopt: boolean;
+};
+export default function CatList({ showAdopt }: propType) {
   const [cats, setCats] = useState<CatsType[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -24,7 +29,6 @@ export default function CatList() {
   useEffect(() => {
     const fetchCats = async () => {
       try {
-        console.log(localStorage.getItem("token"));
         const res = await api.get("/kot");
         setCats(res.data);
       } catch (err) {
@@ -44,7 +48,14 @@ export default function CatList() {
         ) : cats.length === 0 ? (
           <div>Brak kotków</div>
         ) : (
-          cats.map((cat) => <CatListItem cat={cat} key={cat.id} />)
+          cats.map((cat) => (
+            <CatListItem
+              cat={cat}
+              showAdopt={showAdopt}
+              key={cat.id}
+              showEditButton={true}
+            />
+          ))
         )}
         <div
           className="cursor-pointer bg-rose-300 hover:bg-rose-400 rounded-2xl p-2 flex flex-col items-center justify-center text-xl "

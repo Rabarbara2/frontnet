@@ -3,26 +3,13 @@ import LogoutButton from "./_components/logout";
 import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import api from "@/lib/axios";
+import Header from "./_components/header";
 
 type UserType = {
   name: string;
   surname: string;
-  isActive: boolean;
   id: string;
   userName: string;
-  normalizedUserName: string;
-  email: string;
-  normalizedEmail: string;
-  emailConfirmed: string;
-  passwordHash: string;
-  securityStamp: string;
-  concurrencyStamp: string;
-  phoneNumber: string;
-  phoneNumberConfirmed: boolean;
-  twoFactorEnabled: boolean;
-  lockoutEnd: string;
-  lockoutEnabled: string;
-  accessFailedCount: number;
 };
 
 function getUserIdFromToken(token: string) {
@@ -80,29 +67,27 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-zinc-50 over">
-      <div className="w-full p-6 font-semibold bg-amber-200 h-fit flex justify-between absolute">
-        <div className="text-center text-4xl">Schronisko 2</div>
-
-        <div className="flex gap-4 font-normal">
-          <div className="w-fit">{token && <LogoutButton />}</div>
-          {!token && (
-            <Link
-              className="bg-blue-500 text-white p-2 text-lg rounded-xl hover:bg-blue-600 hover:cursor-pointer"
-              href={"/login"}
-            >
-              Zaloguj się
-            </Link>
-          )}
-        </div>
-      </div>
-
+      <Header />
       <div className="w-full min-h-screen text-4xl font-bold flex justify-center items-center">
         {token && user
-          ? `Witaj ${user.name} ${user.surname}`
+          ? zalogowan(user.name, user.surname)
           : !token
-          ? "Zaloguj sie koleżko"
+          ? "Zaloguj sie koleżko "
           : "Ładowanie..."}
       </div>
+    </div>
+  );
+}
+function zalogowan(name: string, surname: string) {
+  return (
+    <div className=" flex flex-col gap-8 justify-center items-center">
+      Witaj {name} {surname}
+      <Link
+        href={"/dashboard"}
+        className="p-3 px-5 rounded-xl text-lg font-normal bg-amber-300 hover:bg-amber-400"
+      >
+        Przejdź do panelu użytkownika
+      </Link>
     </div>
   );
 }

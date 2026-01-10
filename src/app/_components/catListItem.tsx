@@ -1,5 +1,7 @@
 import api from "@/lib/axios";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -14,6 +16,8 @@ type CatsType = {
     dateOfArival: string;
     isAdopted: boolean;
   };
+  showAdopt: boolean;
+  showEditButton: boolean;
 };
 
 type CatFormData = {
@@ -25,8 +29,13 @@ type CatFormData = {
   dateOfBirth: string;
 };
 
-export default function CatListItem({ cat }: CatsType) {
+export default function CatListItem({
+  cat,
+  showAdopt,
+  showEditButton,
+}: CatsType) {
   const [showEdit, setShowEdit] = useState(false);
+  const router = useRouter();
 
   const { register, handleSubmit, reset } = useForm<CatFormData>({
     defaultValues: {
@@ -89,10 +98,14 @@ export default function CatListItem({ cat }: CatsType) {
           </div>
           <div>
             <label>płeć: </label>
-            <input
-              {...register("gender")}
+            <select
               className="bg-pink-100 rounded p-1 w-full"
-            />
+              {...register("gender", { required: "Wybierz płeć" })}
+            >
+              <option value="Samiec">Samiec</option>
+              <option value="Samica">Samica</option>
+              <option value="Inna / Nieznana">Inna / Nieznana</option>
+            </select>
           </div>
           <div className="flex flex-col">
             <label>data przyjęcia: </label>
@@ -111,18 +124,21 @@ export default function CatListItem({ cat }: CatsType) {
             />
           </div>
 
-          <div className="w-full bg-red-100 rounded-2xl p-3 flex justify-between mt-2">
-            <button
-              type="submit"
-              className="bg-green-300 rounded-xl px-4 py-1 hover:bg-green-400 cursor-pointer"
-            >
-              yup
-            </button>
-            <div
-              className="bg-red-300 rounded-xl px-4 py-1 hover:bg-red-400 cursor-pointer"
-              onClick={() => setShowEdit(false)}
-            >
-              nah
+          <div className="w-full bg-red-100 rounded-2xl p-3 text-center">
+            fr?
+            <div className="w-full flex justify-between mt-2">
+              <button
+                type="submit"
+                className="bg-green-300 rounded-xl px-4 py-1 hover:bg-green-400 cursor-pointer"
+              >
+                yup
+              </button>
+              <div
+                className="bg-red-300 rounded-xl px-4 py-1 hover:bg-red-400 cursor-pointer"
+                onClick={() => setShowEdit(false)}
+              >
+                nah
+              </div>
             </div>
           </div>
         </form>
@@ -136,15 +152,24 @@ export default function CatListItem({ cat }: CatsType) {
           <div>data urodzenia: {cat.dateOfBirth.slice(0, 10)}</div>
         </div>
       )}
-
-      {!showEdit && (
-        <div
-          className=" p-1.5 bg-pink-100 rounded-xl m-6 hover:bg-fuchsia-500 hover:text-white hover:cursor-pointer"
-          onClick={() => setShowEdit(true)}
-        >
-          Edytuj
-        </div>
-      )}
+      <div className=" flex mt-6 gap-6 justify-around">
+        {!showEdit && showEditButton && (
+          <div
+            className=" p-1.5 bg-pink-100 rounded-xl  hover:bg-fuchsia-500 hover:text-white hover:cursor-pointer"
+            onClick={() => setShowEdit(true)}
+          >
+            Edytuj
+          </div>
+        )}
+        {showAdopt && (
+          <Link
+            className=" p-1.5 bg-pink-100 rounded-xl hover:bg-fuchsia-500 hover:text-white hover:cursor-pointer"
+            href={`/dashboard/${cat.id}`}
+          >
+            Dodaj Adopcję
+          </Link>
+        )}
+      </div>
     </div>
   );
 }

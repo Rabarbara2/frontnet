@@ -31,7 +31,7 @@ export default function EmployeeList() {
         {loading ? (
           <div>ładowańsko</div>
         ) : cats.length === 0 ? (
-          <div>Brak kotków</div>
+          <div>Brak pracowników</div>
         ) : (
           cats.map((cat) => (
             <Link

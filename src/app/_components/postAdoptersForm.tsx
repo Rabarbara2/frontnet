@@ -1,3 +1,4 @@
+import api from "@/lib/axios";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -32,7 +33,6 @@ export default function PostAdopterForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      style={{ fontFamily: "EB Garamond, serif" }}
       className="w-11/12 border border-blue-200 text-zinc-800 p-4 space-y-4  rounded mt-2 "
     >
       <div>
@@ -76,12 +76,6 @@ export default function PostAdopterForm() {
 }
 
 async function postCar(data: AdopterType) {
-  const response = await axios.post(
-    "https://localhost:3002/api/adoptujacy",
-    data,
-    {
-      headers: { "Content-Type": "application/json" },
-    }
-  );
+  const response = await api.post("/adoptujacy", data);
   return response.data;
 }
