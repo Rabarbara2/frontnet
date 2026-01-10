@@ -130,6 +130,12 @@ function potwierdzenie(
   chosenOne: AdoptersType,
   router: AppRouterInstance
 ) {
+  const handlePost = async () => {
+    const success = await postAdopcja(kotek.id, chosenOne.id);
+    if (success) {
+      router.push("/dashboard");
+    }
+  };
   return (
     <div>
       Kot {kotek.name} będzie adoptowany przez {chosenOne.name}{" "}
@@ -139,7 +145,7 @@ function potwierdzenie(
         <div className=" flex gap-8 justify-center p-2">
           <div
             className="px-3 rounded p-2 bg-green-300 w-fit hover:cursor-pointer hover:bg-green-400"
-            onClick={() => postAdopcja(kotek.id, chosenOne.id)}
+            onClick={handlePost}
           >
             Tak
           </div>
@@ -166,7 +172,7 @@ async function postAdopcja(kotId: number, adopterId: number) {
 
     if (response.status === 201) {
       alert("Dodano adopcję!");
-      window.location.reload();
+      return 1;
     } else {
       alert("Nie udało się dodać adopcji.");
     }

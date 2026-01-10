@@ -8,6 +8,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import Header from "../_components/header";
 import AdoptionsList from "../_components/adoptionsList";
+import AdoptedCatList from "../_components/adoptedCatsList";
 
 function useAuthFromLocalStorage() {
   const ROLE_CLAIM =
@@ -71,6 +72,9 @@ export default function Home() {
       )}
       {(roles.includes("admin") || roles.includes("opiekun")) && (
         <AdoptionsList />
+      )}
+      {(roles.includes("admin") || roles.includes("opiekun")) && (
+        <AdoptedCatList showAdopt />
       )}
     </div>
   );

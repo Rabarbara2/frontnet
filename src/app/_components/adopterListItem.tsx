@@ -161,9 +161,7 @@ export default function AdopterListItem(cat: AdoptersType) {
 }
 
 async function DeleteAdopter(id: number) {
-  const response = await axios.delete(
-    `https://localhost:3002/api/adoptujacy/${id}`
-  );
+  const response = await api.delete(`adoptujacy/${id}`);
   window.location.reload();
   return response.data;
 }

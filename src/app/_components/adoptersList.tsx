@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import PostCatForm from "./postCarForm";
 import PostAdopterForm from "./postAdoptersForm";
 import AdopterListItem from "./adopterListItem";
+import api from "@/lib/axios";
 type AdoptersType = {
   id: 1;
   name: string;
@@ -21,7 +22,7 @@ export default function AdopterstList() {
   useEffect(() => {
     const fetchAdopters = async () => {
       try {
-        const res = await axios.get("https://localhost:3002/api/adoptujacy");
+        const res = await api.get("adoptujacy");
         setAdopters(res.data);
       } catch (err) {
         console.error(err);

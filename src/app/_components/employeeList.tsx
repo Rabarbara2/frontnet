@@ -1,4 +1,5 @@
 "use client";
+import api from "@/lib/axios";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ export default function EmployeeList() {
   useEffect(() => {
     const fetchCats = async () => {
       try {
-        const res = await axios.get("https://localhost:3002/api/pracownik");
+        const res = await api.get("pracownik");
         setCats(res.data);
       } catch (err) {
         console.error(err);
