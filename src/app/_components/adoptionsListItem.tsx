@@ -1,3 +1,11 @@
+import api from "@/lib/axios";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { mainModule } from "process";
+import { useState } from "react";
+import { set } from "react-hook-form";
+
 type AdoptionType = {
   adoption: {
     id: number;
@@ -24,9 +32,34 @@ type AdoptionType = {
       isAdopted: boolean;
     };
   };
+  showEdit: boolean;
+  showDelete: boolean;
 };
 
-export default function AdoptionsListItem({ adoption }: AdoptionType) {
+const handleDelete = async (id: number) => {
+  try {
+    const res = await api.delete(`/adopcja/${id}`);
+
+    if (res.status === 200 || res.status === 204) {
+      alert("Adopcja została cofnięta");
+      window.location.reload();
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      alert(error.response?.status);
+    } else {
+      alert("Nieznany błąd");
+    }
+  }
+};
+
+export default function AdoptionsListItem({
+  adoption,
+  showEdit,
+  showDelete,
+}: AdoptionType) {
+  const [miau, setmiau] = useState(false);
+
   return (
     <div className="bg-orange-200 rounded-2xl p-4 flex flex-col gap-1">
       <div>
@@ -48,6 +81,41 @@ export default function AdoptionsListItem({ adoption }: AdoptionType) {
       <div className="font-semibold">
         data adopcji: {adoption.adoptionDate.slice(0, 10) || "BRAK DANYCH"}
       </div>
+      {showEdit && (
+        <Link
+          href={`/dashboard/editadopt/${adoption.id}`}
+          className="p-2 px-4 bg-amber-400 hover:bg-amber-300 rounded-xl w-fit"
+        >
+          Edytuj
+        </Link>
+      )}
+      {showDelete && !miau && (
+        <button
+          onClick={() => setmiau(true)}
+          className="p-2 px-4 mt-4 bg-red-400 hover:bg-amber-300 rounded-xl w-fit hover:cursor-pointer"
+        >
+          USUŃ
+        </button>
+      )}
+      {showDelete && miau && (
+        <div className="p-4 bg-orange-100 rounded-2xl">
+          fr?
+          <div className="flex justify-between p-2">
+            <button
+              onClick={() => setmiau(false)}
+              className="p-2 px-4 bg-green-200 hover:bg-green-300  hover:cursor-pointer rounded-xl w-fit"
+            >
+              nah
+            </button>
+            <button
+              onClick={() => handleDelete(adoption.id)}
+              className="p-2 px-4 bg-red-200 hover:bg-red-300 rounded-xl w-fit hover:cursor-pointer"
+            >
+              yup
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -50,6 +50,7 @@ export default function LoginForm() {
 
       <input
         className="border p-2 w-full rounded"
+        type="password"
         placeholder="Hasło"
         {...register("password", {
           required: "Hasło jest wymagane",

@@ -3,13 +3,16 @@ import api from "@/lib/axios";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-type EmployeeType = {
+import EmployeeListItem from "./employeeListItem";
+type PracownikType = {
   id: string;
   name: string;
   surname: string;
+  userName: string;
+  roles: [name: string];
 };
 export default function EmployeeList() {
-  const [cats, setCats] = useState<EmployeeType[]>([]);
+  const [cats, setCats] = useState<PracownikType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,16 +37,7 @@ export default function EmployeeList() {
         ) : cats.length === 0 ? (
           <div>Brak pracowników</div>
         ) : (
-          cats.map((cat) => (
-            <Link
-              key={cat.id}
-              className=" bg-emerald-400 rounded-2xl p2 flex flex-col items-center"
-              href={`/${cat.id}`}
-            >
-              <div>{cat.name || "BRAK IMIENIA"}</div>
-              <div>{cat.surname || "BRAK NAZWISKA"}</div>
-            </Link>
-          ))
+          cats.map((cat) => <EmployeeListItem {...cat} key={cat.id} />)
         )}
       </div>
     </div>

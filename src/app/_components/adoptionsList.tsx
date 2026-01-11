@@ -29,7 +29,11 @@ type AdoptionType = {
   };
 };
 
-export default function AdoptionsList() {
+export default function AdoptionsList({
+  showOptions,
+}: {
+  showOptions: boolean;
+}) {
   const [cats, setCats] = useState<AdoptionType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,7 +59,14 @@ export default function AdoptionsList() {
         ) : cats.length === 0 ? (
           <div>Brak kotków</div>
         ) : (
-          cats.map((cat) => <AdoptionsListItem adoption={cat} key={cat.id} />)
+          cats.map((cat) => (
+            <AdoptionsListItem
+              adoption={cat}
+              showDelete={showOptions}
+              showEdit={showOptions}
+              key={cat.id}
+            />
+          ))
         )}
       </div>
     </div>

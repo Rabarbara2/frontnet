@@ -1,6 +1,4 @@
 "use client";
-
-import LogoutButton from "../_components/logout";
 import CatList from "../_components/catList";
 import EmployeeList from "../_components/employeeList";
 import AdopterstList from "../_components/adoptersList";
@@ -9,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Header from "../_components/header";
 import AdoptionsList from "../_components/adoptionsList";
 import AdoptedCatList from "../_components/adoptedCatsList";
+import Link from "next/link";
 
 function useAuthFromLocalStorage() {
   const ROLE_CLAIM =
@@ -46,34 +45,31 @@ export default function Home() {
   const router = useRouter();
   const { token, roles } = useAuthFromLocalStorage();
 
+  const isReady = token !== null && token !== "null";
+  const isAdmin = isReady && roles.includes("admin");
+
   useEffect(() => {
-    if (token === null) {
+    if (isReady && !isAdmin) {
       router.replace("/");
     }
-  }, [token, router]);
+  }, [isReady, isAdmin, router]);
 
-  if (token === "null" || token === null) return null;
+  if (!isReady || !isAdmin) return null;
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-zinc-50">
       <Header />
       <div className="h-24" />
 
-      {(roles.includes("opiekun") ||
-        roles.includes("weterynarz") ||
-        roles.includes("admin")) && (
-        <CatList
-          showAdopt={roles.includes("opiekun") || roles.includes("admin")}
-        />
-      )}
-
-      {(roles.includes("admin") || roles.includes("opiekun")) && (
-        <AdopterstList />
-      )}
-      {(roles.includes("admin") || roles.includes("opiekun")) && (
-        <AdoptionsList showOptions={roles.includes("admin")} />
-      )}
-      {roles.includes("admin") && <AdoptedCatList />}
+      <EmployeeList />
+      <div className="w-full items-center justify-center flex my-6 ">
+        <Link
+          href={"/register"}
+          className="px-3 py-2 bg-emerald-500 hover:cursor-pointer rounded text-xl w-fit hover:bg-emerald-600"
+        >
+          + Dodaj nowego pracownika
+        </Link>
+      </div>
     </div>
   );
 }

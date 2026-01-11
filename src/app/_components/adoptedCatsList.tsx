@@ -31,10 +31,7 @@ export type AdoptedCatResponse = {
   adopcje: AdoptionType[];
 };
 
-type propType = {
-  showAdopt: boolean;
-};
-export default function AdoptedCatList({ showAdopt }: propType) {
+export default function AdoptedCatList() {
   const [cats, setCats] = useState<AdoptedCatResponse[]>([]);
   const [loading, setLoading] = useState(true);
 

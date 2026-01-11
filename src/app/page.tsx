@@ -10,6 +10,7 @@ type UserType = {
   surname: string;
   id: string;
   userName: string;
+  roles: string[];
 };
 
 function getUserIdFromToken(token: string) {
@@ -70,7 +71,7 @@ export default function Home() {
       <Header />
       <div className="w-full min-h-screen text-4xl font-bold flex justify-center items-center">
         {token && user
-          ? zalogowan(user.name, user.surname)
+          ? zalogowan(user)
           : !token
           ? "Zaloguj sie koleżko "
           : "Ładowanie..."}
@@ -78,16 +79,24 @@ export default function Home() {
     </div>
   );
 }
-function zalogowan(name: string, surname: string) {
+function zalogowan(user: UserType) {
   return (
     <div className=" flex flex-col gap-8 justify-center items-center">
-      Witaj {name} {surname}
+      Witaj {user.name} {user.surname}
       <Link
         href={"/dashboard"}
         className="p-3 px-5 rounded-xl text-lg font-normal bg-amber-300 hover:bg-amber-400"
       >
         Przejdź do panelu użytkownika
       </Link>
+      {user.roles.includes("admin") && (
+        <Link
+          href={"/admin"}
+          className="p-3 px-5 rounded-xl text-lg font-normal bg-orange-400 hover:bg-orange-500"
+        >
+          Przejdź do panelu admina
+        </Link>
+      )}
     </div>
   );
 }
